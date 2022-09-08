@@ -6,9 +6,9 @@ This is the main repository for these pretrained models. Static URLs for downloa
 
 A python package - [fastBio](https://github.com/ahoarfrost/fastBio/) - for loading, manipulating, and training biological data for deep learning, as well as using the pretrained models in this release, is also available.
 
-If you find LookingGlass, LookingGlass-derived models, or fastBio helpful, please cite the preprint:
+If you find LookingGlass, LookingGlass-derived models, or fastBio helpful, please cite the paper:
 
-> Hoarfrost, A., Aptekmann, A., Farfanuk, G. & Bromberg, Y. Shedding Light on Microbial Dark Matter with A Universal Language of Life. *bioRxiv* (2020). doi:10.1101/2020.12.23.424215. https://www.biorxiv.org/content/10.1101/2020.12.23.424215v2.
+> Hoarfrost, A., Aptekmann, A., Farfañuk, G. et al. Deep learning of a bacterial and archaeal universal language of life enables transfer learning and illuminates microbial dark matter. Nat Commun 13, 2606 (2022). https://doi.org/10.1038/s41467-022-30070-8.
 
 # Models in the most recent release
 
