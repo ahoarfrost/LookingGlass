@@ -30,7 +30,7 @@ The most recent [release of LookingGlass (v1.1)](https://github.com/ahoarfrost/L
 | Embedding size | 104 |
 | Parameters | ~17M |
 | Vocabulary | 8 tokens (G, A, C, T + special tokens) |
-| Training data | Metagenomic sequences |
+| Training data | Read-length DNA sequences derived from uniformly sampled genomes from across the prokaryotic tree of life |
 
 ## LookingGlass vocabulary
 
