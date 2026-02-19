@@ -11,8 +11,12 @@ Nature Communications, 2022.
 Usage:
     from lookingglass import LookingGlass, LookingGlassTokenizer
 
-    model = LookingGlass.from_pretrained('lookingglass-v1')
+    # Load from HuggingFace Hub
+    model = LookingGlass.from_pretrained('HoarfrostLab/lookingglass-v1')
     tokenizer = LookingGlassTokenizer()
+
+    # Or load from local path
+    model = LookingGlass.from_pretrained('./lookingglass-v1')
 
     inputs = tokenizer(["GATTACA", "ATCGATCG"], return_tensors=True)
     embeddings = model.get_embeddings(inputs['input_ids'])  # (batch, 104)
@@ -28,8 +32,31 @@ import torch
 import torch.nn as nn
 import torch.nn.functional as F
 
+try:
+    from huggingface_hub import hf_hub_download
+    HF_HUB_AVAILABLE = True
+except ImportError:
+    HF_HUB_AVAILABLE = False
 
-__version__ = "1.0.0"
+
+__version__ = "1.1.0"
+
+
+def _is_hf_hub_id(path: str) -> bool:
+    """Check if path looks like a HuggingFace Hub model ID (e.g., 'user/model')."""
+    if os.path.exists(path):
+        return False
+    return '/' in path and not path.startswith(('.', '/'))
+
+
+def _download_from_hub(repo_id: str, filename: str) -> str:
+    """Download a file from HuggingFace Hub and return the local path."""
+    if not HF_HUB_AVAILABLE:
+        raise ImportError(
+            "huggingface_hub is required to load models from the Hub. "
+            "Install it with: pip install huggingface_hub"
+        )
+    return hf_hub_download(repo_id=repo_id, filename=filename)
 __all__ = [
     "LookingGlassConfig",
     "LookingGlass",
@@ -76,7 +103,12 @@ class LookingGlassConfig:
 
     @classmethod
     def from_pretrained(cls, pretrained_path: str) -> "LookingGlassConfig":
-        if os.path.isdir(pretrained_path):
+        if _is_hf_hub_id(pretrained_path):
+            try:
+                config_path = _download_from_hub(pretrained_path, "config.json")
+            except Exception:
+                return cls()
+        elif os.path.isdir(pretrained_path):
             config_path = os.path.join(pretrained_path, "config.json")
         else:
             config_path = pretrained_path
@@ -235,11 +267,19 @@ class LookingGlassTokenizer:
 
     @classmethod
     def from_pretrained(cls, pretrained_path: str) -> "LookingGlassTokenizer":
-        config_path = os.path.join(pretrained_path, "tokenizer_config.json")
         kwargs = {}
-        if os.path.exists(config_path):
-            with open(config_path, 'r') as f:
-                kwargs = json.load(f)
+        if _is_hf_hub_id(pretrained_path):
+            try:
+                config_path = _download_from_hub(pretrained_path, "tokenizer_config.json")
+                with open(config_path, 'r') as f:
+                    kwargs = json.load(f)
+            except Exception:
+                pass
+        else:
+            config_path = os.path.join(pretrained_path, "tokenizer_config.json")
+            if os.path.exists(config_path):
+                with open(config_path, 'r') as f:
+                    kwargs = json.load(f)
         return cls(**kwargs)
 
 
@@ -510,7 +550,11 @@ class LookingGlass(nn.Module):
         config = config or LookingGlassConfig.from_pretrained(pretrained_path)
         model = cls(config)
 
-        model_path = os.path.join(pretrained_path, "pytorch_model.bin")
+        if _is_hf_hub_id(pretrained_path):
+            model_path = _download_from_hub(pretrained_path, "pytorch_model.bin")
+        else:
+            model_path = os.path.join(pretrained_path, "pytorch_model.bin")
+
         if os.path.exists(model_path):
             state_dict = torch.load(model_path, map_location='cpu')
             # Only load encoder weights
@@ -604,7 +648,11 @@ class LookingGlassLM(nn.Module):
         config = config or LookingGlassConfig.from_pretrained(pretrained_path)
         model = cls(config)
 
-        model_path = os.path.join(pretrained_path, "pytorch_model.bin")
+        if _is_hf_hub_id(pretrained_path):
+            model_path = _download_from_hub(pretrained_path, "pytorch_model.bin")
+        else:
+            model_path = os.path.join(pretrained_path, "pytorch_model.bin")
+
         if os.path.exists(model_path):
             state_dict = torch.load(model_path, map_location='cpu')
             model.load_state_dict(state_dict, strict=False)
