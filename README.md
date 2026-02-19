@@ -54,6 +54,7 @@ The vocabulary consists of 8 tokens:
 ```bash
 pip install torch
 git clone https://huggingface.co/HoarfrostLab/lookingglass-v1
+cd lookingglass-v1
 ```
 
 # Tutorial
@@ -63,7 +64,7 @@ git clone https://huggingface.co/HoarfrostLab/lookingglass-v1
 ```python
 from lookingglass import LookingGlass, LookingGlassTokenizer
 
-model = LookingGlass.from_pretrained('./lookingglass-v1')
+model = LookingGlass.from_pretrained('.')
 tokenizer = LookingGlassTokenizer()
 
 inputs = tokenizer(["GATTACA", "ATCGATCGATCG"], return_tensors=True)
