@@ -2,7 +2,7 @@
 
 LookingGlass is a general-purpose 'universal language of life' deep learning model for read-length biological sequences. It can be used for diverse downstream transfer learning tasks for biological data, some of which are described in the paper.
 
-This is the main repository for these pretrained models. **Release v1.1** provides a pure PyTorch implementation with no fastai dependencies. Static URLs for downloading these models are available in [release v1.1](https://github.com/ahoarfrost/LookingGlass/releases/tag/v1.1) of this repo.
+This is the main repository for these pretrained models. **Release v1.1** provides a pure PyTorch implementation with no fastai dependencies. Static URLs for downloading these models are available in [release v1.1](https://github.com/ahoarfrost/LookingGlass/releases/tag/v1.1) of this repo. They can also be accessed on [HuggingFace at HoarfrostLab/lookingglass-v1](https://huggingface.co/HoarfrostLab/lookingglass-v1).
 
 > **Note:** Looking for the original fastai-based models? See [release v1.0](https://github.com/ahoarfrost/LookingGlass/releases/tag/v1.0) and the associated [fastBio](https://github.com/ahoarfrost/fastBio) repository.
 
