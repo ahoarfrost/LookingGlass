@@ -14,6 +14,8 @@ If you find LookingGlass, LookingGlass-derived models, or fastBio helpful, pleas
 
 The most recent [release of LookingGlass (v1.1)](https://github.com/ahoarfrost/LookingGlass/releases/tag/v1.1) provides a pure PyTorch implementation with no external dependencies beyond PyTorch.
 
+The model is also available on HuggingFace Hub: [HoarfrostLab/lookingglass-v1](https://huggingface.co/HoarfrostLab/lookingglass-v1)
+
 * **LookingGlass**
 
     LookingGlass is a 'universal language of life', producing contextually-aware, functionally and evolutionarily relevant representations of short DNA reads. As a general purpose 'biological language' representation model, it is broadly useful for training diverse downstream transfer learning tasks. The following files are available:
@@ -50,24 +52,41 @@ The vocabulary consists of 8 tokens:
 # Installation
 
 ```bash
-pip install torch
+pip install torch huggingface_hub
 ```
 
 # Tutorial
 
 ## Quick Start
 
+**Option 1: Load directly from HuggingFace Hub**
+
 ```python
 from lookingglass import LookingGlass, LookingGlassTokenizer
 
-# Load model and tokenizer
+# Load from HuggingFace Hub
+model = LookingGlass.from_pretrained('HoarfrostLab/lookingglass-v1')
+tokenizer = LookingGlassTokenizer()
+
+inputs = tokenizer(["GATTACA", "ATCGATCGATCG"], return_tensors=True)
+embeddings = model.get_embeddings(inputs['input_ids'])
+print(embeddings.shape)  # torch.Size([2, 104])
+```
+
+**Option 2: Clone and load locally**
+
+```bash
+git clone https://huggingface.co/HoarfrostLab/lookingglass-v1
+```
+
+```python
+from lookingglass import LookingGlass, LookingGlassTokenizer
+
+# Load from local path
 model = LookingGlass.from_pretrained('./lookingglass-v1')
 tokenizer = LookingGlassTokenizer()
 
-# Tokenize DNA sequences
 inputs = tokenizer(["GATTACA", "ATCGATCGATCG"], return_tensors=True)
-
-# Get embeddings
 embeddings = model.get_embeddings(inputs['input_ids'])
 print(embeddings.shape)  # torch.Size([2, 104])
 ```
