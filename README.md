@@ -52,37 +52,17 @@ The vocabulary consists of 8 tokens:
 # Installation
 
 ```bash
-pip install torch huggingface_hub
+pip install torch
+git clone https://huggingface.co/HoarfrostLab/lookingglass-v1
 ```
 
 # Tutorial
 
 ## Quick Start
 
-**Option 1: Load directly from HuggingFace Hub**
-
 ```python
 from lookingglass import LookingGlass, LookingGlassTokenizer
 
-# Load from HuggingFace Hub
-model = LookingGlass.from_pretrained('HoarfrostLab/lookingglass-v1')
-tokenizer = LookingGlassTokenizer()
-
-inputs = tokenizer(["GATTACA", "ATCGATCGATCG"], return_tensors=True)
-embeddings = model.get_embeddings(inputs['input_ids'])
-print(embeddings.shape)  # torch.Size([2, 104])
-```
-
-**Option 2: Clone and load locally**
-
-```bash
-git clone https://huggingface.co/HoarfrostLab/lookingglass-v1
-```
-
-```python
-from lookingglass import LookingGlass, LookingGlassTokenizer
-
-# Load from local path
 model = LookingGlass.from_pretrained('./lookingglass-v1')
 tokenizer = LookingGlassTokenizer()
 
