@@ -2,7 +2,7 @@
 
 LookingGlass is a general-purpose 'universal language of life' deep learning model for read-length biological sequences. It can be used for diverse downstream transfer learning tasks for biological data, some of which are described in the paper.
 
-This is the main repository for these pretrained models. **Release v1.1** provides a pure PyTorch implementation with no fastai dependencies. Static URLs for downloading these models are available in [release v1.1](https://github.com/ahoarfrost/LookingGlass/releases/tag/v1.1) of this repo. They can also be accessed on [HuggingFace at HoarfrostLab/lookingglass-v1](https://huggingface.co/HoarfrostLab/lookingglass-v1).
+This is the main repository for these pretrained models. All models are available as pure PyTorch implementations with no fastai dependencies on [HuggingFace](https://huggingface.co/HoarfrostLab).
 
 > **Note:** Looking for the original fastai-based models? See [release v1.0](https://github.com/ahoarfrost/LookingGlass/releases/tag/v1.0) and the associated [fastBio](https://github.com/ahoarfrost/fastBio) repository.
 
@@ -10,11 +10,9 @@ If you find LookingGlass, LookingGlass-derived models, or fastBio helpful, pleas
 
 > Hoarfrost, A., Aptekmann, A., Farfañuk, G. et al. Deep learning of a bacterial and archaeal universal language of life enables transfer learning and illuminates microbial dark matter. Nat Commun 13, 2606 (2022). https://doi.org/10.1038/s41467-022-30070-8.
 
-# Models in the most recent release
+# Available Models
 
-The most recent [release of LookingGlass (v1.1)](https://github.com/ahoarfrost/LookingGlass/releases/tag/v1.1) provides a pure PyTorch implementation with no external dependencies beyond PyTorch.
-
-The model is also available on HuggingFace Hub: [HoarfrostLab/lookingglass-v1](https://huggingface.co/HoarfrostLab/lookingglass-v1)
+All models are available on [HuggingFace Hub](https://huggingface.co/HoarfrostLab) as pure PyTorch implementations with no external dependencies beyond PyTorch.
 
 * **LookingGlass** ([HuggingFace](https://huggingface.co/HoarfrostLab/lookingglass-v1))
 
