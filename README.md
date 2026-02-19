@@ -16,12 +16,29 @@ The most recent [release of LookingGlass (v1.1)](https://github.com/ahoarfrost/L
 
 The model is also available on HuggingFace Hub: [HoarfrostLab/lookingglass-v1](https://huggingface.co/HoarfrostLab/lookingglass-v1)
 
-* **LookingGlass**
+* **LookingGlass** ([HuggingFace](https://huggingface.co/HoarfrostLab/lookingglass-v1))
 
-    LookingGlass is a 'universal language of life', producing contextually-aware, functionally and evolutionarily relevant representations of short DNA reads. As a general purpose 'biological language' representation model, it is broadly useful for training diverse downstream transfer learning tasks. The following files are available:
-    * [pytorch_model.bin](https://github.com/ahoarfrost/LookingGlass/releases/download/v1.1/pytorch_model.bin) - PyTorch model weights (~17M parameters).
-    * [config.json](https://github.com/ahoarfrost/LookingGlass/releases/download/v1.1/config.json) - Model configuration.
-    * [lookingglass.py](https://github.com/ahoarfrost/LookingGlass/releases/download/v1.1/lookingglass.py) - Self-contained model implementation.
+    LookingGlass is a 'universal language of life', producing contextually-aware, functionally and evolutionarily relevant representations of short DNA reads. As a general purpose 'biological language' representation model, it is broadly useful for training diverse downstream transfer learning tasks.
+
+## Fine-tuned Classifiers
+
+The following classifiers are fine-tuned from the LookingGlass base model:
+
+* **Functional Classifier** ([HuggingFace](https://huggingface.co/HoarfrostLab/LGv1_FunctionalClassifier))
+
+    Classifies DNA reads into one of 1274 experimentally-validated functional annotations with 81.5% accuracy.
+
+* **Optimal Temperature Classifier** ([HuggingFace](https://huggingface.co/HoarfrostLab/LGv1_OptimalTempClassifier))
+
+    Identifies whether a DNA read originates from an enzyme with psychrophilic (<15°C), mesophilic (20-40°C), or thermophilic (>50°C) optimal temperature with 70.1% accuracy.
+
+* **Oxidoreductase Classifier** ([HuggingFace](https://huggingface.co/HoarfrostLab/LGv1_OxidoreductaseClassifier))
+
+    Classifies whether a DNA read originates from an oxidoreductase (EC 1.-.-.-) with 82.3% accuracy.
+
+* **Reading Frame Classifier** ([HuggingFace](https://huggingface.co/HoarfrostLab/LGv1_ReadingFrameClassifier))
+
+    Identifies the correct reading frame (1, 2, 3, -1, -2, -3) for prokaryotic DNA reads.
 
 ## Model Architecture
 
@@ -70,6 +87,29 @@ tokenizer = LookingGlassTokenizer()
 inputs = tokenizer(["GATTACA", "ATCGATCGATCG"], return_tensors=True)
 embeddings = model.get_embeddings(inputs['input_ids'])
 print(embeddings.shape)  # torch.Size([2, 104])
+```
+
+## Using Classifiers
+
+```bash
+pip install torch
+git clone https://huggingface.co/HoarfrostLab/LGv1_OptimalTempClassifier
+cd LGv1_OptimalTempClassifier
+```
+
+```python
+from lookingglass_classifier import LookingGlassClassifier, LookingGlassTokenizer
+
+model = LookingGlassClassifier.from_pretrained('.')
+tokenizer = LookingGlassTokenizer()
+model.eval()
+
+inputs = tokenizer(["GATTACA"], return_tensors=True)
+prediction = model.predict(inputs['input_ids'])
+probs = model.predict_proba(inputs['input_ids'])
+
+print(f"Predicted class: {model.config.class_names[prediction[0]]}")
+print(f"Probabilities: {probs}")
 ```
 
 ## Getting Embeddings
